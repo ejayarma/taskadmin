@@ -1,4 +1,6 @@
 const STORAGE_KEY = 'tasks';
+let editModal = null;
+let currentEditId = null;
 
 function getTasks() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -17,14 +19,18 @@ function renderTasks() {
     const li = document.createElement('li');
     li.draggable = true;
     li.dataset.id = task.id;
-    li.className = task.completed ? 'completed' : '';
+    li.className = `list-group-item d-flex align-items-center ${task.completed ? 'list-group-item-secondary' : ''}`;
     li.innerHTML = `
-      <input type="checkbox" class="task-checkbox" data-id="${task.id}" ${task.completed ? 'checked' : ''}>
-      <span class="drag-handle">⠿</span>
-      <span class="task-title">${task.title}</span>
-      <span class="task-start-date">${task.startDate || ''}</span>
-      <button class="edit-btn" data-id="${task.id}">✎</button>
-      <button class="delete-btn" data-id="${task.id}">✕</button>
+      <input type="checkbox" class="form-check-input me-2 task-checkbox" data-id="${task.id}" ${task.completed ? 'checked' : ''}>
+      <i class="bi bi-grip-vertical text-muted me-2 drag-handle"></i>
+      <span class="task-title flex-grow-1 ${task.completed ? 'text-decoration-line-through text-muted' : ''}">${task.title}</span>
+      <span class="task-start-date text-muted me-3 small">${task.startDate || ''}</span>
+      <button class="btn btn-sm btn-outline-warning me-1 edit-btn" data-id="${task.id}">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${task.id}">
+        <i class="bi bi-trash"></i>
+      </button>
     `;
     list.appendChild(li);
   });
@@ -65,127 +71,112 @@ function editTask(id, newTitle, startDate) {
   }
 }
 
-function reorderTasks(fromId, toId) {
-  const tasks = getTasks();
-  const fromIndex = tasks.findIndex(t => t.id === fromId);
-  const toIndex = tasks.findIndex(t => t.id === toId);
-  if (fromIndex === -1 || toIndex === -1) return;
-  
-  const [movedTask] = tasks.splice(fromIndex, 1);
-  tasks.splice(toIndex, 0, movedTask);
-  saveTasks(tasks);
-  renderTasks();
-}
-
 function showEditModal(id) {
   const tasks = getTasks();
   const task = tasks.find(t => t.id === id);
   if (!task) return;
 
-  const modal = document.getElementById('editModal');
+  currentEditId = id;
   const titleInput = document.getElementById('editTaskTitle');
   const dateInput = document.getElementById('editTaskStartDate');
-  const saveBtn = document.getElementById('saveEditBtn');
-  const cancelBtn = document.getElementById('cancelEditBtn');
 
   titleInput.value = task.title;
   dateInput.value = task.startDate || '';
-  modal.style.display = 'flex';
 
-  const handleSave = () => {
-    editTask(id, titleInput.value, dateInput.value);
-    modal.style.display = 'none';
-    cleanup();
-  };
-
-  const handleCancel = () => {
-    modal.style.display = 'none';
-    cleanup();
-  };
-
-  const cleanup = () => {
-    saveBtn.removeEventListener('click', handleSave);
-    cancelBtn.removeEventListener('click', handleCancel);
-  };
-
-  saveBtn.addEventListener('click', handleSave);
-  cancelBtn.addEventListener('click', handleCancel);
+  editModal.show();
 }
 
-document.getElementById('addBtn').addEventListener('click', () => {
-  const input = document.getElementById('taskInput');
-  const dateInput = document.getElementById('taskStartDate');
-  addTask(input.value, dateInput.value);
-  input.value = '';
-  dateInput.value = '';
-});
+document.addEventListener('DOMContentLoaded', () => {
+  editModal = new bootstrap.Modal(document.getElementById('editModal'));
 
-document.getElementById('taskInput').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+  document.getElementById('addBtn').addEventListener('click', () => {
     const input = document.getElementById('taskInput');
     const dateInput = document.getElementById('taskStartDate');
     addTask(input.value, dateInput.value);
     input.value = '';
     dateInput.value = '';
-  }
-});
+  });
 
-document.getElementById('taskList').addEventListener('click', (e) => {
-  if (e.target.classList.contains('delete-btn')) {
-    deleteTask(Number(e.target.dataset.id));
-  } else if (e.target.classList.contains('edit-btn')) {
-    showEditModal(Number(e.target.dataset.id));
-  } else if (e.target.classList.contains('task-checkbox')) {
-    toggleCompleted(Number(e.target.dataset.id));
-  }
-});
-
-let draggedItem = null;
-
-document.getElementById('taskList').addEventListener('dragstart', (e) => {
-  if (e.target.tagName === 'LI') {
-    draggedItem = e.target;
-    e.target.classList.add('dragging');
-  }
-});
-
-document.getElementById('taskList').addEventListener('dragend', (e) => {
-  if (e.target.tagName === 'LI') {
-    e.target.classList.remove('dragging');
-    draggedItem = null;
-  }
-});
-
-document.getElementById('taskList').addEventListener('dragover', (e) => {
-  e.preventDefault();
-  const target = e.target.closest('li');
-  if (target && target !== draggedItem) {
-    const rect = target.getBoundingClientRect();
-    const midY = rect.top + rect.height / 2;
-    if (e.clientY < midY) {
-      target.parentNode.insertBefore(draggedItem, target);
-    } else {
-      target.parentNode.insertBefore(draggedItem, target.nextSibling);
+  document.getElementById('taskInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('taskInput');
+      const dateInput = document.getElementById('taskStartDate');
+      addTask(input.value, dateInput.value);
+      input.value = '';
+      dateInput.value = '';
     }
-  }
-});
+  });
 
-document.getElementById('taskList').addEventListener('drop', (e) => {
-  e.preventDefault();
-  if (draggedItem) {
-    const fromId = Number(draggedItem.dataset.id);
-    const items = [...document.querySelectorAll('#taskList li')];
-    const toIndex = items.indexOf(draggedItem);
-    
-    const tasks = getTasks();
-    const movedTask = tasks.find(t => t.id === fromId);
-    if (movedTask) {
-      const newTasks = tasks.filter(t => t.id !== fromId);
-      newTasks.splice(toIndex, 0, movedTask);
-      saveTasks(newTasks);
-      renderTasks();
+  document.getElementById('taskList').addEventListener('click', (e) => {
+    const target = e.target.closest('[data-id]');
+    if (!target) return;
+
+    const id = Number(target.dataset.id);
+    if (target.classList.contains('delete-btn') || target.closest('.delete-btn')) {
+      deleteTask(id);
+    } else if (target.classList.contains('edit-btn') || target.closest('.edit-btn')) {
+      showEditModal(id);
+    } else if (target.classList.contains('task-checkbox')) {
+      toggleCompleted(id);
     }
-  }
-});
+  });
 
-renderTasks();
+  document.getElementById('saveEditBtn').addEventListener('click', () => {
+    const titleInput = document.getElementById('editTaskTitle');
+    const dateInput = document.getElementById('editTaskStartDate');
+    editTask(currentEditId, titleInput.value, dateInput.value);
+    editModal.hide();
+  });
+
+  let draggedItem = null;
+
+  document.getElementById('taskList').addEventListener('dragstart', (e) => {
+    const li = e.target.closest('li');
+    if (li) {
+      draggedItem = li;
+      li.classList.add('opacity-50');
+    }
+  });
+
+  document.getElementById('taskList').addEventListener('dragend', (e) => {
+    const li = e.target.closest('li');
+    if (li) {
+      li.classList.remove('opacity-50');
+      draggedItem = null;
+    }
+  });
+
+  document.getElementById('taskList').addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const target = e.target.closest('li');
+    if (target && target !== draggedItem) {
+      const rect = target.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      if (e.clientY < midY) {
+        target.parentNode.insertBefore(draggedItem, target);
+      } else {
+        target.parentNode.insertBefore(draggedItem, target.nextSibling);
+      }
+    }
+  });
+
+  document.getElementById('taskList').addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (draggedItem) {
+      const fromId = Number(draggedItem.dataset.id);
+      const items = [...document.querySelectorAll('#taskList li')];
+      const toIndex = items.indexOf(draggedItem);
+
+      const tasks = getTasks();
+      const movedTask = tasks.find(t => t.id === fromId);
+      if (movedTask) {
+        const newTasks = tasks.filter(t => t.id !== fromId);
+        newTasks.splice(toIndex, 0, movedTask);
+        saveTasks(newTasks);
+        renderTasks();
+      }
+    }
+  });
+
+  renderTasks();
+});
