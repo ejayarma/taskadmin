@@ -5,8 +5,8 @@ So that I can keep track of things I need to do
 
 Scenario: Create a new task
 Given the user has no tasks
-When the user creates a task with title "Buy groceries"
-Then the task "Buy groceries" should be added to the task list
+When the user creates a task with title "Buy groceries" and start date "2026-07-20"
+Then the task "Buy groceries" should be added to the task list with start date "2026-07-20"
 
 Scenario: List all tasks
 Given the user has the following tasks:
@@ -40,4 +40,9 @@ Scenario: Complete a task
 Given the user has a task "Buy groceries"
 When the user marks "Buy groceries" as completed
 Then the task "Buy groceries" should be struck through and greyed out
+
+Scenario: Task action buttons display icons
+Given the user has a task "Buy groceries"
+Then the task "Buy groceries" should display an edit icon button
+And the task "Buy groceries" should display a delete icon button
 

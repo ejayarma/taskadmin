@@ -23,17 +23,17 @@ function renderTasks() {
       <span class="drag-handle">⠿</span>
       <span class="task-title">${task.title}</span>
       <span class="task-start-date">${task.startDate || ''}</span>
-      <button class="edit-btn" data-id="${task.id}">Edit</button>
-      <button class="delete-btn" data-id="${task.id}">Delete</button>
+      <button class="edit-btn" data-id="${task.id}">✎</button>
+      <button class="delete-btn" data-id="${task.id}">✕</button>
     `;
     list.appendChild(li);
   });
 }
 
-function addTask(title) {
+function addTask(title, startDate) {
   if (!title.trim()) return;
   const tasks = getTasks();
-  tasks.push({ id: Date.now(), title: title.trim() });
+  tasks.push({ id: Date.now(), title: title.trim(), startDate: startDate || '' });
   saveTasks(tasks);
   renderTasks();
 }
@@ -114,15 +114,19 @@ function showEditModal(id) {
 
 document.getElementById('addBtn').addEventListener('click', () => {
   const input = document.getElementById('taskInput');
-  addTask(input.value);
+  const dateInput = document.getElementById('taskStartDate');
+  addTask(input.value, dateInput.value);
   input.value = '';
+  dateInput.value = '';
 });
 
 document.getElementById('taskInput').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     const input = document.getElementById('taskInput');
-    addTask(input.value);
+    const dateInput = document.getElementById('taskStartDate');
+    addTask(input.value, dateInput.value);
     input.value = '';
+    dateInput.value = '';
   }
 });
 
