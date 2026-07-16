@@ -22,7 +22,14 @@ body {
 h1 {
   text-align: center;
   color: #333;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
   margin-bottom: 24px;
+  font-size: 14px;
 }
 
 .input-group {
