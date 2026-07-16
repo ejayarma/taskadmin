@@ -15,7 +15,12 @@ function renderTasks() {
 
   tasks.forEach(task => {
     const li = document.createElement('li');
+    li.draggable = true;
+    li.dataset.id = task.id;
+    li.className = task.completed ? 'completed' : '';
     li.innerHTML = `
+      <input type="checkbox" class="task-checkbox" data-id="${task.id}" ${task.completed ? 'checked' : ''}>
+      <span class="drag-handle">⠿</span>
       <span class="task-title">${task.title}</span>
       <span class="task-start-date">${task.startDate || ''}</span>
       <button class="edit-btn" data-id="${task.id}">Edit</button>
@@ -39,6 +44,16 @@ function deleteTask(id) {
   renderTasks();
 }
 
+function toggleCompleted(id) {
+  const tasks = getTasks();
+  const task = tasks.find(t => t.id === id);
+  if (task) {
+    task.completed = !task.completed;
+    saveTasks(tasks);
+    renderTasks();
+  }
+}
+
 function editTask(id, newTitle, startDate) {
   const tasks = getTasks();
   const task = tasks.find(t => t.id === id);
@@ -48,6 +63,18 @@ function editTask(id, newTitle, startDate) {
     saveTasks(tasks);
     renderTasks();
   }
+}
+
+function reorderTasks(fromId, toId) {
+  const tasks = getTasks();
+  const fromIndex = tasks.findIndex(t => t.id === fromId);
+  const toIndex = tasks.findIndex(t => t.id === toId);
+  if (fromIndex === -1 || toIndex === -1) return;
+  
+  const [movedTask] = tasks.splice(fromIndex, 1);
+  tasks.splice(toIndex, 0, movedTask);
+  saveTasks(tasks);
+  renderTasks();
 }
 
 function showEditModal(id) {
@@ -104,6 +131,56 @@ document.getElementById('taskList').addEventListener('click', (e) => {
     deleteTask(Number(e.target.dataset.id));
   } else if (e.target.classList.contains('edit-btn')) {
     showEditModal(Number(e.target.dataset.id));
+  } else if (e.target.classList.contains('task-checkbox')) {
+    toggleCompleted(Number(e.target.dataset.id));
+  }
+});
+
+let draggedItem = null;
+
+document.getElementById('taskList').addEventListener('dragstart', (e) => {
+  if (e.target.tagName === 'LI') {
+    draggedItem = e.target;
+    e.target.classList.add('dragging');
+  }
+});
+
+document.getElementById('taskList').addEventListener('dragend', (e) => {
+  if (e.target.tagName === 'LI') {
+    e.target.classList.remove('dragging');
+    draggedItem = null;
+  }
+});
+
+document.getElementById('taskList').addEventListener('dragover', (e) => {
+  e.preventDefault();
+  const target = e.target.closest('li');
+  if (target && target !== draggedItem) {
+    const rect = target.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    if (e.clientY < midY) {
+      target.parentNode.insertBefore(draggedItem, target);
+    } else {
+      target.parentNode.insertBefore(draggedItem, target.nextSibling);
+    }
+  }
+});
+
+document.getElementById('taskList').addEventListener('drop', (e) => {
+  e.preventDefault();
+  if (draggedItem) {
+    const fromId = Number(draggedItem.dataset.id);
+    const items = [...document.querySelectorAll('#taskList li')];
+    const toIndex = items.indexOf(draggedItem);
+    
+    const tasks = getTasks();
+    const movedTask = tasks.find(t => t.id === fromId);
+    if (movedTask) {
+      const newTasks = tasks.filter(t => t.id !== fromId);
+      newTasks.splice(toIndex, 0, movedTask);
+      saveTasks(newTasks);
+      renderTasks();
+    }
   }
 });
 

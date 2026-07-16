@@ -23,3 +23,21 @@ When the user edits the task to change title to "Buy organic groceries" and set 
 Then the task should have the updated title "Buy organic groceries"
 And the task should have start date "2026-07-20"
 
+Scenario: Reorder tasks by dragging
+Given the user has the following tasks:
+title
+| Buy groceries
+| Read a book
+| Walk the dog
+When the user drags "Read a book" to the first position
+Then the tasks should be in the order:
+title
+| Read a book
+| Buy groceries
+| Walk the dog
+
+Scenario: Complete a task
+Given the user has a task "Buy groceries"
+When the user marks "Buy groceries" as completed
+Then the task "Buy groceries" should be struck through and greyed out
+

@@ -182,3 +182,43 @@ h1 {
 #cancelEditBtn:hover {
   background: #7f8c8d;
 }
+
+.drag-handle {
+  cursor: grab;
+  margin-right: 8px;
+  color: #999;
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+#taskList li.dragging {
+  opacity: 0.5;
+  background: #e8f4fc;
+}
+
+#taskList li {
+  transition: background 0.2s;
+}
+
+.task-checkbox {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+#taskList li.completed {
+  opacity: 0.5;
+  background: #f0f0f0;
+}
+
+#taskList li.completed .task-title {
+  text-decoration: line-through;
+  color: #999;
+}
+
+#taskList li.completed .task-start-date {
+  text-decoration: line-through;
+  color: #bbb;
+}
