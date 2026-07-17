@@ -22,3 +22,9 @@ body {
 #taskStartDate {
   max-width: 180px;
 }
+
+.task-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -25,6 +25,9 @@ function renderTasks() {
       <i class="bi bi-grip-vertical text-muted me-2 drag-handle"></i>
       <span class="task-title flex-grow-1 ${task.completed ? 'text-decoration-line-through text-muted' : ''}">${task.title}</span>
       <span class="task-start-date text-muted me-3 small">${task.startDate || ''}</span>
+      <button class="btn btn-sm btn-outline-info me-1 view-btn" data-id="${task.id}" title="View task">
+        <i class="bi bi-eye"></i>
+      </button>
       <button class="btn btn-sm btn-outline-warning me-1 edit-btn" data-id="${task.id}">
         <i class="bi bi-pencil"></i>
       </button>
@@ -71,6 +74,18 @@ function editTask(id, newTitle, startDate) {
   }
 }
 
+let viewModal = null;
+
+function showViewModal(id) {
+  const tasks = getTasks();
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  document.getElementById('viewTaskTitle').textContent = task.title;
+  document.getElementById('viewTaskStartDate').textContent = task.startDate || 'Not set';
+  document.getElementById('viewTaskStatus').textContent = task.completed ? 'Completed' : 'Pending';
+  viewModal.show();
+}
+
 function showEditModal(id) {
   const tasks = getTasks();
   const task = tasks.find(t => t.id === id);
@@ -88,6 +103,7 @@ function showEditModal(id) {
 
 document.addEventListener('DOMContentLoaded', () => {
   editModal = new bootstrap.Modal(document.getElementById('editModal'));
+  viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
 
   document.getElementById('addBtn').addEventListener('click', () => {
     const input = document.getElementById('taskInput');
@@ -114,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const id = Number(target.dataset.id);
     if (target.classList.contains('delete-btn') || target.closest('.delete-btn')) {
       deleteTask(id);
+    } else if (target.classList.contains('view-btn') || target.closest('.view-btn')) {
+      showViewModal(id);
     } else if (target.classList.contains('edit-btn') || target.closest('.edit-btn')) {
       showEditModal(id);
     } else if (target.classList.contains('task-checkbox')) {
