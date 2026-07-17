@@ -61,10 +61,11 @@ function toggleCompleted(id) {
 }
 
 function editTask(id, newTitle, startDate) {
+  if (!newTitle.trim()) return;
   const tasks = getTasks();
   const task = tasks.find(t => t.id === id);
   if (task) {
-    task.title = newTitle;
+    task.title = newTitle.trim();
     task.startDate = startDate;
     saveTasks(tasks);
     renderTasks();
@@ -124,8 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('saveEditBtn').addEventListener('click', () => {
     const titleInput = document.getElementById('editTaskTitle');
     const dateInput = document.getElementById('editTaskStartDate');
+    const prevTasks = JSON.stringify(getTasks());
     editTask(currentEditId, titleInput.value, dateInput.value);
-    editModal.hide();
+    if (JSON.stringify(getTasks()) !== prevTasks) {
+      editModal.hide();
+    }
   });
 
   let draggedItem = null;
