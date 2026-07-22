@@ -212,6 +212,56 @@ test('Cancel deletion when dialog is dismissed', async ({ page }) => {
   await expect(page.locator('#taskList li')).toHaveCount(1);
 });
 
+test('Create a task with description', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.fill('#taskDescription', 'Milk, eggs, bread');
+  await page.fill('#taskStartDate', '2026-07-20');
+  await page.fill('#taskDueDate', '2026-07-25');
+  await page.click('#addBtn');
+
+  const task = page.locator('#taskList li');
+  await expect(task).toContainText('Buy groceries');
+  await expect(task).toContainText('Milk, eggs, bread');
+  await expect(task).toContainText('2026-07-20');
+  await expect(task).toContainText('Due: 2026-07-25');
+});
+
+test('View task description in details modal', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.fill('#taskDescription', 'Milk, eggs, bread');
+  await page.click('#addBtn');
+
+  await page.click('.view-btn');
+
+  await expect(page.locator('#viewTaskDescription')).toHaveText('Milk, eggs, bread');
+});
+
+test('Edit task description', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.fill('#taskDescription', 'Milk, eggs');
+  await page.click('#addBtn');
+
+  await page.click('.edit-btn');
+
+  await page.fill('#editTaskDescription', 'Milk, eggs, bread, butter');
+  await page.fill('#editTaskTitle', 'Buy groceries');
+  await page.fill('#editTaskStartDate', '2026-07-20');
+  await page.fill('#editTaskDueDate', '2026-07-25');
+  await page.click('#saveEditBtn');
+
+  const task = page.locator('#taskList li');
+  await expect(task).toContainText('Milk, eggs, bread, butter');
+});
+
+test('Create a task without description shows no description', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.click('#addBtn');
+
+  const task = page.locator('#taskList li');
+  await expect(task).toContainText('Buy groceries');
+  await expect(task.locator('.task-desc')).toHaveCount(0);
+});
+
 test('Task action buttons display icons', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
   await page.click('#addBtn');

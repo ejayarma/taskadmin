@@ -3,10 +3,10 @@ As a user
 I want to manage my tasks
 So that I can keep track of things I need to do
 
-Scenario: Create a new task with start date and due date
+Scenario: Create a new task with start date, due date and description
 Given the user has no tasks
-When the user creates a task with title "Buy groceries", start date "2026-07-20" and due date "2026-07-25"
-Then the task "Buy groceries" should be added to the task list with start date "2026-07-20" and due date "2026-07-25"
+When the user creates a task with title "Buy groceries", description "Milk, eggs, bread", start date "2026-07-20" and due date "2026-07-25"
+Then the task "Buy groceries" should be added to the task list with description "Milk, eggs, bread", start date "2026-07-20" and due date "2026-07-25"
 
 Scenario: Create a new task with auto-filled start date
 Given the user has no tasks
@@ -24,8 +24,9 @@ And the tasks should include "Buy groceries" and "Read a book"
 
 Scenario: Edit a task
 Given the user has a task "Buy groceries"
-When the user edits the task to change title to "Buy organic groceries", start date to "2026-07-20" and due date to "2026-07-25"
+When the user edits the task to change title to "Buy organic groceries", description to "Organic milk, eggs, bread", start date to "2026-07-20" and due date to "2026-07-25"
 Then the task should have the updated title "Buy organic groceries"
+And the task should have description "Organic milk, eggs, bread"
 And the task should have start date "2026-07-20"
 And the task should have due date "2026-07-25"
 
@@ -60,6 +61,16 @@ When the user clicks delete on task "Buy groceries"
 Then a confirmation dialog should be shown
 When the user cancels the deletion
 Then the task "Buy groceries" should still appear in the task list
+
+Scenario: View task description in details modal
+Given the user has a task "Buy groceries" with description "Milk, eggs, bread"
+When the user clicks the view button on task "Buy groceries"
+Then the task details modal should show description "Milk, eggs, bread"
+
+Scenario: Create a task without description
+Given the user has no tasks
+When the user creates a task with title "Buy groceries"
+Then the task "Buy groceries" should have no description
 
 Scenario: Task action buttons display icons
 Given the user has a task "Buy groceries"

@@ -10,6 +10,7 @@ A simple client-side task management application built with vanilla HTML, CSS, a
 - Page title: "Task Manager - John Ayarma"
 - Header with app title "Task Manager" and subtitle "by John Ayarma"
 - Input field for task title
+- Textarea for task description
 - Date picker for start date
 - Add button
 - Task list (ul)
@@ -17,7 +18,11 @@ A simple client-side task management application built with vanilla HTML, CSS, a
     - Checkbox for completion
     - Drag handle for reordering
     - Task title text
+    - Task description preview (if set)
     - Start date (if set)
+    - Due date (if set)
+    - Status badge
+    - View button (icon)
     - Edit button (icon)
     - Delete button (icon)
 ```
@@ -26,10 +31,11 @@ A simple client-side task management application built with vanilla HTML, CSS, a
 
 ### 4.1 Create Task
 - User enters title in input field
+- User optionally enters description in textarea
 - User optionally selects start date
 - Click "Add" button or press Enter
 - Task appears in the list
-- Input field and date picker clear
+- Input field, description, and date pickers clear
 
 ### 4.2 List Tasks
 - All tasks display in a list
@@ -42,7 +48,7 @@ A simple client-side task management application built with vanilla HTML, CSS, a
 
 ### 4.4 Edit Task
 - Each task has an edit icon button
-- Clicking opens a modal to update title and start date
+- Clicking opens a modal to update title, description, start date, and due date
 
 ### 4.5 Complete Task
 - Each task has a checkbox
@@ -61,7 +67,9 @@ A simple client-side task management application built with vanilla HTML, CSS, a
   {
     id: Date.now(),
     title: "Task name",
+    description: "Task description",
     startDate: "2026-07-20",
+    dueDate: "2026-07-25",
     completed: false
   }
   ```
