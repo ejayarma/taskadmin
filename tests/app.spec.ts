@@ -15,14 +15,26 @@ test('can add a task', async ({ page }) => {
   await expect(page.locator('#taskList li')).toContainText('Buy groceries');
 });
 
-test('Create a new task with title and start date', async ({ page }) => {
+test('Create a new task with title, start date and due date', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
   await page.fill('#taskStartDate', '2026-07-20');
+  await page.fill('#taskDueDate', '2026-07-25');
   await page.click('#addBtn');
 
   const task = page.locator('#taskList li');
   await expect(task).toContainText('Buy groceries');
   await expect(task).toContainText('2026-07-20');
+  await expect(task).toContainText('Due: 2026-07-25');
+});
+
+test('Create a task auto-fills start date with today', async ({ page }) => {
+  const today = new Date().toISOString().split('T')[0];
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.click('#addBtn');
+
+  const task = page.locator('#taskList li');
+  await expect(task).toContainText('Buy groceries');
+  await expect(task).toContainText(today);
 });
 
 test('List all tasks', async ({ page }) => {
@@ -49,11 +61,13 @@ test('Edit a task', async ({ page }) => {
 
   await page.fill('#editTaskTitle', 'Buy organic groceries');
   await page.fill('#editTaskStartDate', '2026-07-20');
+  await page.fill('#editTaskDueDate', '2026-07-25');
   await page.click('#saveEditBtn');
 
   const task = page.locator('#taskList li');
   await expect(task).toContainText('Buy organic groceries');
   await expect(task).toContainText('2026-07-20');
+  await expect(task).toContainText('Due: 2026-07-25');
 });
 
 test('Reorder tasks by dragging', async ({ page }) => {

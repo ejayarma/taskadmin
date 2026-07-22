@@ -26,7 +26,8 @@ function renderTasks() {
       <input type="checkbox" class="form-check-input me-2 task-checkbox" data-id="${task.id}" ${task.completed ? 'checked' : ''}>
       <i class="bi bi-grip-vertical text-muted me-2 drag-handle"></i>
       <span class="task-title flex-grow-1 ${task.completed ? 'text-decoration-line-through text-muted' : ''}">${task.title}</span>
-      <span class="task-start-date text-muted me-3 small">${task.startDate || ''}</span>
+      <span class="task-start-date text-muted me-2 small">${task.startDate || ''}</span>
+      <span class="task-due-date text-muted me-3 small">${task.dueDate ? 'Due: ' + task.dueDate : ''}</span>
       <button class="btn btn-sm btn-outline-info me-1 view-btn" data-id="${task.id}" title="View task">
         <i class="bi bi-eye"></i>
       </button>
@@ -41,10 +42,19 @@ function renderTasks() {
   });
 }
 
-function addTask(title, startDate) {
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function addTask(title, startDate, dueDate) {
   if (!title.trim()) return;
   const tasks = getTasks();
-  tasks.push({ id: Date.now(), title: title.trim(), startDate: startDate || '' });
+  tasks.push({
+    id: Date.now(),
+    title: title.trim(),
+    startDate: startDate || todayStr(),
+    dueDate: dueDate || ''
+  });
   saveTasks(tasks);
   renderTasks();
 }
@@ -78,12 +88,13 @@ function toggleCompleted(id) {
   }
 }
 
-function editTask(id, newTitle, startDate) {
+function editTask(id, newTitle, startDate, dueDate) {
   const tasks = getTasks();
   const task = tasks.find(t => t.id === id);
   if (task) {
     task.title = newTitle;
     task.startDate = startDate;
+    task.dueDate = dueDate;
     saveTasks(tasks);
     renderTasks();
   }
@@ -97,6 +108,7 @@ function showViewModal(id) {
   if (!task) return;
   document.getElementById('viewTaskTitle').textContent = task.title;
   document.getElementById('viewTaskStartDate').textContent = task.startDate || 'Not set';
+  document.getElementById('viewTaskDueDate').textContent = task.dueDate || 'Not set';
   document.getElementById('viewTaskStatus').textContent = task.completed ? 'Completed' : 'Pending';
   viewModal.show();
 }
@@ -109,9 +121,11 @@ function showEditModal(id) {
   currentEditId = id;
   const titleInput = document.getElementById('editTaskTitle');
   const dateInput = document.getElementById('editTaskStartDate');
+  const dueDateInput = document.getElementById('editTaskDueDate');
 
   titleInput.value = task.title;
-  dateInput.value = task.startDate || '';
+  dateInput.value = task.startDate || todayStr();
+  dueDateInput.value = task.dueDate || '';
 
   editModal.show();
 }
@@ -127,21 +141,30 @@ document.addEventListener('DOMContentLoaded', () => {
     pendingDeleteId = null;
   });
 
+  document.getElementById('taskStartDate').value = todayStr();
+  document.getElementById('taskDueDate').value = todayStr();
+  document.getElementById('editTaskStartDate').value = todayStr();
+  document.getElementById('editTaskDueDate').value = todayStr();
+
   document.getElementById('addBtn').addEventListener('click', () => {
     const input = document.getElementById('taskInput');
     const dateInput = document.getElementById('taskStartDate');
-    addTask(input.value, dateInput.value);
+    const dueDateInput = document.getElementById('taskDueDate');
+    addTask(input.value, dateInput.value, dueDateInput.value);
     input.value = '';
-    dateInput.value = '';
+    dateInput.value = todayStr();
+    dueDateInput.value = todayStr();
   });
 
   document.getElementById('taskInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       const input = document.getElementById('taskInput');
       const dateInput = document.getElementById('taskStartDate');
-      addTask(input.value, dateInput.value);
+      const dueDateInput = document.getElementById('taskDueDate');
+      addTask(input.value, dateInput.value, dueDateInput.value);
       input.value = '';
-      dateInput.value = '';
+      dateInput.value = todayStr();
+      dueDateInput.value = todayStr();
     }
   });
 
@@ -164,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('saveEditBtn').addEventListener('click', () => {
     const titleInput = document.getElementById('editTaskTitle');
     const dateInput = document.getElementById('editTaskStartDate');
-    editTask(currentEditId, titleInput.value, dateInput.value);
+    const dueDateInput = document.getElementById('editTaskDueDate');
+    editTask(currentEditId, titleInput.value, dateInput.value, dueDateInput.value);
     editModal.hide();
   });
 

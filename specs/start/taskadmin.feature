@@ -3,10 +3,15 @@ As a user
 I want to manage my tasks
 So that I can keep track of things I need to do
 
-Scenario: Create a new task
+Scenario: Create a new task with start date and due date
 Given the user has no tasks
-When the user creates a task with title "Buy groceries" and start date "2026-07-20"
-Then the task "Buy groceries" should be added to the task list with start date "2026-07-20"
+When the user creates a task with title "Buy groceries", start date "2026-07-20" and due date "2026-07-25"
+Then the task "Buy groceries" should be added to the task list with start date "2026-07-20" and due date "2026-07-25"
+
+Scenario: Create a new task with auto-filled start date
+Given the user has no tasks
+When the user creates a task with title "Buy groceries"
+Then the task "Buy groceries" should appear with today's date as start date
 
 Scenario: List all tasks
 Given the user has the following tasks:
@@ -19,9 +24,10 @@ And the tasks should include "Buy groceries" and "Read a book"
 
 Scenario: Edit a task
 Given the user has a task "Buy groceries"
-When the user edits the task to change title to "Buy organic groceries" and set start date to "2026-07-20"
+When the user edits the task to change title to "Buy organic groceries", start date to "2026-07-20" and due date to "2026-07-25"
 Then the task should have the updated title "Buy organic groceries"
 And the task should have start date "2026-07-20"
+And the task should have due date "2026-07-25"
 
 Scenario: Reorder tasks by dragging
 Given the user has the following tasks:
