@@ -51,7 +51,7 @@ test('Requires due date when creating a task', async ({ page }) => {
   await page.fill('#taskDueDate', '');
   await page.click('#addBtn');
 
-  await expect(page.locator('#taskError')).not.toHaveClass(/visible/);
+  await expect(page.locator('#taskError')).toHaveClass(/visible/);
   await expect(page.locator('#taskError')).toContainText('Due date is required');
   await expect(page.locator('#taskList li')).toHaveCount(0);
 });
