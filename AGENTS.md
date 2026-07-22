@@ -32,3 +32,14 @@ Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf
 - `styles.css` - Custom styling
 - `app.js` - Application logic
 - Bootstrap 5 CDN - UI framework
+
+# Figma API
+
+- **Base URL**: `https://api.figma.com`
+- **Auth**: `X-Figma-Token` header with a personal access token
+- **Token**: `<token>`
+- **User**: Emmanuel John Ayarma (johnayarmahe@gmail.com)
+- **Example** (verify connection): `GET /v1/me`
+  ```bash
+  curl -H "X-Figma-Token: <token>" https://api.figma.com/v1/me
+  ```
