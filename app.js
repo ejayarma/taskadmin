@@ -12,6 +12,12 @@ function saveTasks(tasks) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 
+function statusText(task) {
+  if (task.completed) return 'Completed';
+  if (task.dueDate && task.dueDate < todayStr()) return 'Overdue';
+  return 'In Progress';
+}
+
 function renderTasks() {
   const tasks = getTasks();
   const list = document.getElementById('taskList');
@@ -27,7 +33,8 @@ function renderTasks() {
       <i class="bi bi-grip-vertical text-muted me-2 drag-handle"></i>
       <span class="task-title flex-grow-1 ${task.completed ? 'text-decoration-line-through text-muted' : ''}">${task.title}</span>
       <span class="task-start-date text-muted me-2 small">${task.startDate || ''}</span>
-      <span class="task-due-date text-muted me-3 small">${task.dueDate ? 'Due: ' + task.dueDate : ''}</span>
+      <span class="task-due-date text-muted me-2 small">${task.dueDate ? 'Due: ' + task.dueDate : ''}</span>
+      <span class="badge ${task.completed ? 'bg-success' : (task.dueDate && task.dueDate < todayStr() ? 'bg-danger' : 'bg-primary')} me-2">${statusText(task)}</span>
       <button class="btn btn-sm btn-outline-info me-1 view-btn" data-id="${task.id}" title="View task">
         <i class="bi bi-eye"></i>
       </button>
@@ -134,7 +141,7 @@ function showViewModal(id) {
   document.getElementById('viewTaskTitle').textContent = task.title;
   document.getElementById('viewTaskStartDate').textContent = task.startDate || 'Not set';
   document.getElementById('viewTaskDueDate').textContent = task.dueDate || 'Not set';
-  document.getElementById('viewTaskStatus').textContent = task.completed ? 'Completed' : 'Pending';
+  document.getElementById('viewTaskStatus').textContent = statusText(task);
   viewModal.show();
 }
 

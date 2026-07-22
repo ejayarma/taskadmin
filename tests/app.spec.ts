@@ -138,6 +138,37 @@ test('Reorder tasks by dragging', async ({ page }) => {
   await expect(items.nth(2)).toContainText('Walk the dog');
 });
 
+test('New task shows In Progress badge', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.click('#addBtn');
+
+  await expect(page.locator('#taskList li .badge')).toHaveText('In Progress');
+  await expect(page.locator('#taskList li .badge')).toHaveClass(/bg-primary/);
+});
+
+test('Completed task shows Completed badge', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.click('#addBtn');
+
+  await page.check('.task-checkbox');
+
+  await expect(page.locator('#taskList li .badge')).toHaveText('Completed');
+  await expect(page.locator('#taskList li .badge')).toHaveClass(/bg-success/);
+});
+
+test('Overdue task shows Overdue badge', async ({ page }) => {
+  await page.evaluate(() => {
+    const tasks = [
+      { id: 1, title: 'Old task', startDate: '2020-01-01', dueDate: '2020-01-02' },
+    ];
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  });
+  await page.reload();
+
+  await expect(page.locator('#taskList li .badge')).toHaveText('Overdue');
+  await expect(page.locator('#taskList li .badge')).toHaveClass(/bg-danger/);
+});
+
 test('Complete a task', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
   await page.click('#addBtn');
