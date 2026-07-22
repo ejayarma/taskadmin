@@ -105,7 +105,7 @@ test('Complete a task', async ({ page }) => {
 
 test('Task action buttons display icons', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
-  await page.click('#addBtnMistake');
+  await page.click('#addBtn');
 
   await expect(page.locator('.edit-btn i')).toHaveClass(/bi-pencil/);
   await expect(page.locator('.delete-btn i')).toHaveClass(/bi-trash/);
