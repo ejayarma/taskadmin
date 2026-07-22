@@ -15,7 +15,7 @@ Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf
 
 - **Server**: darkhttpd v1.17
 - **Port**: 8080
-- **Document Root**: `/home/taskadmin`
+- **Document Root**: `/home/task admin`
 - **Start**: `sh /home/taskadmin/serve.sh`
 - **URL**: `http://localhost:8080`
 
