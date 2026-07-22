@@ -31,7 +31,7 @@ Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf
 - `index.html` - Main HTML structure
 - `styles.css` - Custom styling
 - `app.js` - Application logic
-- Bootstrap 5 CDN - UI framework
+- Bootstrap Icons CDN - icon library (no Bootstrap CSS/JS)
 
 # Figma API
 

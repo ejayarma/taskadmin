@@ -1,7 +1,4 @@
 const STORAGE_KEY = 'tasks';
-let editModal = null;
-let deleteModal = null;
-let viewModal = null;
 let currentEditId = null;
 let pendingDeleteId = null;
 let draggedItem = null;
@@ -72,6 +69,12 @@ function updateCategories() {
   document.getElementById('personalCount').textContent = personal + ' Tasks';
 }
 
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 function renderTasks() {
   const tasks = getTasks();
   const list = document.getElementById('taskList');
@@ -79,7 +82,7 @@ function renderTasks() {
 
   document.getElementById('taskCount').textContent = tasks.length;
 
-  tasks.forEach((task, index) => {
+  tasks.forEach(task => {
     const li = document.createElement('li');
     li.draggable = true;
     li.dataset.id = task.id;
@@ -94,7 +97,7 @@ function renderTasks() {
     li.innerHTML = `
       <i class="bi bi-grip-vertical drag-handle"></i>
       <input type="checkbox" class="task-checkbox" data-id="${task.id}" ${task.completed ? 'checked' : ''}>
-      <div class="task-content" data-id="${task.id}">
+      <div class="task-content">
         <div class="task-title${task.completed ? ' completed' : ''}">${escapeHtml(task.title)}</div>
         ${descHtml}
       </div>
@@ -120,10 +123,14 @@ function renderTasks() {
   updateCategories();
 }
 
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('open');
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
 }
 
 function addTask(title, description, startDate, dueDate) {
@@ -153,7 +160,7 @@ function deleteTask(id) {
   const title = task ? task.title : '';
   document.getElementById('deleteTaskTitle').textContent =
     title.length > 50 ? title.slice(0, 50) + '...' : title;
-  deleteModal.show();
+  openModal('deleteModal');
 }
 
 function confirmDelete() {
@@ -162,7 +169,7 @@ function confirmDelete() {
   saveTasks(tasks);
   renderTasks();
   pendingDeleteId = null;
-  deleteModal.hide();
+  closeModal('deleteModal');
 }
 
 function toggleCompleted(id) {
@@ -201,7 +208,7 @@ function showViewModal(id) {
   document.getElementById('viewTaskStartDate').textContent = task.startDate || 'Not set';
   document.getElementById('viewTaskDueDate').textContent = task.dueDate || 'Not set';
   document.getElementById('viewTaskStatus').textContent = statusText(task);
-  viewModal.show();
+  openModal('viewModal');
 }
 
 function showEditModal(id) {
@@ -214,7 +221,24 @@ function showEditModal(id) {
   document.getElementById('editTaskDescription').value = task.description || '';
   document.getElementById('editTaskStartDate').value = task.startDate || todayStr();
   document.getElementById('editTaskDueDate').value = task.dueDate || '';
-  editModal.show();
+  openModal('editModal');
+}
+
+function initModals() {
+  document.querySelectorAll('[data-close-modal]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modal = btn.closest('.custom-modal');
+      if (modal) modal.classList.remove('open');
+    });
+  });
+
+  document.querySelectorAll('.custom-modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', () => {
+      const modal = overlay.closest('.custom-modal');
+      modal.classList.remove('open');
+      if (modal.id === 'deleteModal') pendingDeleteId = null;
+    });
+  });
 }
 
 function initBottomNav() {
@@ -279,10 +303,6 @@ function initDragDrop() {
 function initEventListeners() {
   document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
 
-  document.getElementById('deleteModal').addEventListener('hidden.bs.modal', () => {
-    pendingDeleteId = null;
-  });
-
   document.getElementById('addBtn').addEventListener('click', () => {
     const input = document.getElementById('taskInput');
     const desc = document.getElementById('taskDescription');
@@ -334,7 +354,7 @@ function initEventListeners() {
     const dateInput = document.getElementById('editTaskStartDate');
     const dueDateInput = document.getElementById('editTaskDueDate');
     if (editTask(currentEditId, titleInput.value, descInput.value, dateInput.value, dueDateInput.value)) {
-      editModal.hide();
+      closeModal('editModal');
     }
   });
 
@@ -347,13 +367,10 @@ function initEventListeners() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  editModal = new bootstrap.Modal(document.getElementById('editModal'));
-  deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-  viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
-
   document.getElementById('taskStartDate').value = todayStr();
   document.getElementById('taskDueDate').value = todayStr();
 
+  initModals();
   initBottomNav();
   initDragDrop();
   initEventListeners();
