@@ -46,8 +46,28 @@ function todayStr() {
   return new Date().toISOString().split('T')[0];
 }
 
+function showError(msg) {
+  const el = document.getElementById('taskError');
+  el.textContent = msg;
+  el.classList.remove('d-none');
+}
+
+function clearError() {
+  document.getElementById('taskError').classList.add('d-none');
+}
+
+function validateDates(startDate, dueDate) {
+  if (!startDate) return 'Start date is required';
+  if (!dueDate) return 'Due date is required';
+  if (dueDate < startDate) return 'Due date must be on or after the start date';
+  return '';
+}
+
 function addTask(title, startDate, dueDate) {
-  if (!title.trim()) return;
+  if (!title.trim()) return false;
+  const err = validateDates(startDate, dueDate);
+  if (err) { showError(err); return false; }
+  clearError();
   const tasks = getTasks();
   tasks.push({
     id: Date.now(),
@@ -57,6 +77,7 @@ function addTask(title, startDate, dueDate) {
   });
   saveTasks(tasks);
   renderTasks();
+  return true;
 }
 
 function deleteTask(id) {
@@ -89,6 +110,9 @@ function toggleCompleted(id) {
 }
 
 function editTask(id, newTitle, startDate, dueDate) {
+  const err = validateDates(startDate, dueDate);
+  if (err) { showError(err); return false; }
+  clearError();
   const tasks = getTasks();
   const task = tasks.find(t => t.id === id);
   if (task) {
@@ -98,6 +122,7 @@ function editTask(id, newTitle, startDate, dueDate) {
     saveTasks(tasks);
     renderTasks();
   }
+  return true;
 }
 
 let viewModal = null;
@@ -150,10 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('taskInput');
     const dateInput = document.getElementById('taskStartDate');
     const dueDateInput = document.getElementById('taskDueDate');
-    addTask(input.value, dateInput.value, dueDateInput.value);
-    input.value = '';
-    dateInput.value = todayStr();
-    dueDateInput.value = todayStr();
+    if (addTask(input.value, dateInput.value, dueDateInput.value)) {
+      input.value = '';
+      dateInput.value = todayStr();
+      dueDateInput.value = todayStr();
+    }
   });
 
   document.getElementById('taskInput').addEventListener('keydown', (e) => {
@@ -161,10 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const input = document.getElementById('taskInput');
       const dateInput = document.getElementById('taskStartDate');
       const dueDateInput = document.getElementById('taskDueDate');
-      addTask(input.value, dateInput.value, dueDateInput.value);
-      input.value = '';
-      dateInput.value = todayStr();
-      dueDateInput.value = todayStr();
+      if (addTask(input.value, dateInput.value, dueDateInput.value)) {
+        input.value = '';
+        dateInput.value = todayStr();
+        dueDateInput.value = todayStr();
+      }
     }
   });
 
@@ -188,8 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleInput = document.getElementById('editTaskTitle');
     const dateInput = document.getElementById('editTaskStartDate');
     const dueDateInput = document.getElementById('editTaskDueDate');
-    editTask(currentEditId, titleInput.value, dateInput.value, dueDateInput.value);
-    editModal.hide();
+    if (editTask(currentEditId, titleInput.value, dateInput.value, dueDateInput.value)) {
+      editModal.hide();
+    }
   });
 
   let draggedItem = null;

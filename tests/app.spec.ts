@@ -37,6 +37,39 @@ test('Create a task auto-fills start date with today', async ({ page }) => {
   await expect(task).toContainText(today);
 });
 
+test('Requires start date when creating a task', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.fill('#taskStartDate', '');
+  await page.fill('#taskDueDate', '2026-07-25');
+  await page.click('#addBtn');
+
+  await expect(page.locator('#taskError')).not.toHaveClass(/d-none/);
+  await expect(page.locator('#taskError')).toContainText('Start date is required');
+  await expect(page.locator('#taskList li')).toHaveCount(0);
+});
+
+test('Requires due date when creating a task', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.fill('#taskStartDate', '2026-07-20');
+  await page.fill('#taskDueDate', '');
+  await page.click('#addBtn');
+
+  await expect(page.locator('#taskError')).not.toHaveClass(/d-none/);
+  await expect(page.locator('#taskError')).toContainText('Due date is required');
+  await expect(page.locator('#taskList li')).toHaveCount(0);
+});
+
+test('Requires due date to be on or after start date', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.fill('#taskStartDate', '2026-07-25');
+  await page.fill('#taskDueDate', '2026-07-20');
+  await page.click('#addBtn');
+
+  await expect(page.locator('#taskError')).not.toHaveClass(/d-none/);
+  await expect(page.locator('#taskError')).toContainText('Due date must be on or after the start date');
+  await expect(page.locator('#taskList li')).toHaveCount(0);
+});
+
 test('List all tasks', async ({ page }) => {
   await page.evaluate(() => {
     const tasks = [
