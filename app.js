@@ -48,6 +48,7 @@ function addTask(title, startDate) {
 }
 
 function deleteTask(id) {
+  if (!confirm('Are you sure you want to delete this task?')) return;
   const tasks = getTasks().filter(t => t.id !== id);
   saveTasks(tasks);
   renderTasks();

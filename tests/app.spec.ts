@@ -103,6 +103,26 @@ test('Complete a task', async ({ page }) => {
   await expect(page.locator('#taskList li')).toHaveClass(/list-group-item-secondary/);
 });
 
+test('Delete a task with confirmation', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.click('#addBtn');
+
+  page.once('dialog', dialog => dialog.accept());
+  await page.click('.delete-btn');
+
+  await expect(page.locator('#taskList li')).toHaveCount(0);
+});
+
+test('Cancel deletion when dialog is dismissed', async ({ page }) => {
+  await page.fill('#taskInput', 'Buy groceries');
+  await page.click('#addBtn');
+
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.click('.delete-btn');
+
+  await expect(page.locator('#taskList li')).toHaveCount(1);
+});
+
 test('Task action buttons display icons', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
   await page.click('#addBtn');
