@@ -1,0 +1,193 @@
+{
+  "FILL": [
+    {
+      "name": "Color/Primary",
+      "id": "1:39",
+      "description": ""
+    },
+    {
+      "name": "Color/Black",
+      "id": "1:40",
+      "description": ""
+    },
+    {
+      "name": "Gray 1",
+      "id": "1:3",
+      "description": ""
+    },
+    {
+      "name": "color/black",
+      "id": "1:4",
+      "description": ""
+    },
+    {
+      "name": "Color/Secondery",
+      "id": "1:124",
+      "description": ""
+    },
+    {
+      "name": "color/grey",
+      "id": "101:541",
+      "description": ""
+    },
+    {
+      "name": "color/yellow",
+      "id": "101:542",
+      "description": ""
+    },
+    {
+      "name": "color/white",
+      "id": "101:540",
+      "description": ""
+    },
+    {
+      "name": "System Bg Dark Base / Primary",
+      "id": "101:556",
+      "description": ""
+    },
+    {
+      "name": "Label Light / Primary",
+      "id": "101:557",
+      "description": ""
+    },
+    {
+      "name": "Color Light / Green",
+      "id": "101:558",
+      "description": ""
+    },
+    {
+      "name": "SystemGreen / Light",
+      "id": "101:559",
+      "description": "class var systemGreen: UIColor"
+    },
+    {
+      "name": "Grayscale/Label",
+      "id": "101:560",
+      "description": ""
+    },
+    {
+      "name": "Grayscale/Off-Black",
+      "id": "101:575",
+      "description": ""
+    },
+    {
+      "name": "Grayscale/Input",
+      "id": "101:561",
+      "description": ""
+    },
+    {
+      "name": "Color/White",
+      "id": "101:576",
+      "description": ""
+    }
+  ],
+  "TEXT": [
+    {
+      "name": "Lexend Deca/Semi Bold/24px",
+      "id": "1:122",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Semi Bold/19px",
+      "id": "1:123",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Regular/14px",
+      "id": "1:125",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Semi Bold/14px",
+      "id": "1:776",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Regular/11px",
+      "id": "1:777",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Bold/44px",
+      "id": "101:543",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Semi Bold/44px",
+      "id": "101:544",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Regular/44px",
+      "id": "101:545",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Bold/33px",
+      "id": "101:546",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Semi Bold/33px",
+      "id": "101:547",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Regular/33px",
+      "id": "101:548",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Bold/24px",
+      "id": "101:549",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Regular/24px",
+      "id": "101:550",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Bold/19px",
+      "id": "101:551",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Regular/19px",
+      "id": "101:552",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Bold/14px",
+      "id": "101:553",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Bold/11px",
+      "id": "101:554",
+      "description": ""
+    },
+    {
+      "name": "Lexend Deca/Semi Bold/11px",
+      "id": "101:555",
+      "description": ""
+    },
+    {
+      "name": "manrope/bold/24px",
+      "id": "101:614",
+      "description": ""
+    },
+    {
+      "name": "manrope/bold/14px",
+      "id": "101:615",
+      "description": ""
+    }
+  ],
+  "GRID": [
+    {
+      "name": "4 Column Grid",
+      "id": "101:616",
+      "description": ""
+    }
+  ]
+}

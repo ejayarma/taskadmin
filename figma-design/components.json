@@ -1,0 +1,272 @@
+{
+  "components": {
+    "1:695": {
+      "key": "37b594f961473e06991445b444ba540410821563",
+      "name": "dribbble",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "1:698": {
+      "key": "e869a92a40eeed5be8c2466b0d590ff3bd619f4f",
+      "name": "behance",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "1:206": {
+      "key": "cde2d05b0861a33610a8bd0abaa5a9b81298a997",
+      "name": "Theme=Color",
+      "description": "",
+      "remote": true,
+      "componentSetId": "1:203",
+      "documentationLinks": []
+    },
+    "1:226": {
+      "key": "d0929e8f1bd4d7f6f8b5db48b79f147f686204cd",
+      "name": "Variant=Yellow",
+      "description": "",
+      "remote": true,
+      "componentSetId": "1:225",
+      "documentationLinks": []
+    },
+    "1:244": {
+      "key": "ef5906fb834621566d12f51ed2753c54a1b87677",
+      "name": "Variant=Open Smile Med",
+      "description": "",
+      "remote": true,
+      "componentSetId": "1:236",
+      "documentationLinks": []
+    },
+    "1:471": {
+      "key": "fbc96847998373f1138dd1aa9ebcb20988f67835",
+      "name": "Variant=Smile, Size=Lrg, Open=True",
+      "description": "",
+      "remote": true,
+      "componentSetId": "1:470",
+      "documentationLinks": []
+    },
+    "1:115": {
+      "key": "26e652946ee8529c686f7032c46d595d808550b2",
+      "name": "Iconly/Bold/Arrow - Left",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "1:117": {
+      "key": "d5319ae57bc2abfc95e064a8da0aebb6b6cfced5",
+      "name": "Iconly/Bold/Arrow - Left",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:146": {
+      "key": "c5469b21d4c4392e32236c20b9702129b1216ca0",
+      "name": "vuesax/bold/notification",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:153": {
+      "key": "216ba2e5e2ffe1725a09bcb3853e31af3e57205b",
+      "name": "vuesax/bulk/more",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "1:771": {
+      "key": "7e6944c16fc155b01106bdfab4d377bfe7d3f70d",
+      "name": "vuesax/bold/briefcase",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:204": {
+      "key": "186e7f4bf57219ea05fa4caef3d66415ace1cd1a",
+      "name": "vuesax/bold/user-octagon",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:209": {
+      "key": "2d97f8fb105dde248cfe0b0a08dd6b94a6f6d5b1",
+      "name": "vuesax/bold/book",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:218": {
+      "key": "e7b00d96f9ae2435c6ecbaf5b5c5684e821c77d1",
+      "name": "vuesax/bold/home",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:223": {
+      "key": "6461cae1e8c8eb698602134b4e01361c6fa17515",
+      "name": "vuesax/linear/add",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:229": {
+      "key": "58495752436097453d7f45bbd495c113fcdaac31",
+      "name": "vuesax/bulk/calendar",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:247": {
+      "key": "8894489746fcbd2bb5541c19a97a8288dab5ae59",
+      "name": "vuesax/bulk/document-text",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:255": {
+      "key": "a535a95f6f6877cfa306330c3a19dd95c40be454",
+      "name": "vuesax/bulk/profile-2user",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:95": {
+      "key": "2f820cbb087c6a5c00d990b785a4188734f11d82",
+      "name": "Iconly/Bold/Time Circle",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:346": {
+      "key": "deeb93d2fcdffcd7e7eb23a6b0cdb44aa4387a74",
+      "name": "vuesax/bold/calendar",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:352": {
+      "key": "365e252cd1643683dd243a05e3f393e8846b3e39",
+      "name": "vuesax/bulk/home",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "1:748": {
+      "key": "4238b0c76c828cd50e9e0bbb9b0c2ac223dc5a3a",
+      "name": "Iconly/Bold/Arrow - Down 2",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "1:750": {
+      "key": "eef8f2a8dc9585e80cee804b33b50a7e0a477524",
+      "name": "Iconly/Bold/Arrow - Down 2",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:709": {
+      "key": "959c7d8603ee38f0caed7d17c676beea9c94ada9",
+      "name": "Status Bar",
+      "description": "",
+      "remote": false,
+      "documentationLinks": []
+    },
+    "101:569": {
+      "key": "7a187d293ca902f632b464d4e97772f4bc12e8a9",
+      "name": "Type=H2",
+      "description": "",
+      "remote": true,
+      "componentSetId": "101:566",
+      "documentationLinks": []
+    },
+    "1:741": {
+      "key": "98d68791bf54650c7c6a8c04bb7ab4f915bb2997",
+      "name": "vuesax/bold/notification",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:577": {
+      "key": "31b9e90578821924eb11e6a66a089ca5037da573",
+      "name": "vuesax/bold/user-octagon",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:582": {
+      "key": "07475d06412d07a9af1f3f0661b52386bc3ee79c",
+      "name": "vuesax/bold/book",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:587": {
+      "key": "423f73444e32f7fd3bb06441e3ee62a9f76252ac",
+      "name": "vuesax/linear/add",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:593": {
+      "key": "17e1b79d8e730a8bab5c22f743418269c223e1ce",
+      "name": "vuesax/bold/home",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "1:753": {
+      "key": "219001f562c7ab9716c8a91817c09086afe974c9",
+      "name": "vuesax/bulk/calendar",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:598": {
+      "key": "fd6f566080a430c9bdea72aec5273db8e31ad8f1",
+      "name": "vuesax/bulk/document-text",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    },
+    "101:606": {
+      "key": "e6263690717a8d5cf548677eafb884e2c20d60ff",
+      "name": "vuesax/bulk/profile-2user",
+      "description": "",
+      "remote": true,
+      "documentationLinks": []
+    }
+  },
+  "componentSets": {
+    "1:203": {
+      "key": "6df9ecb1f87ef00d92f4e9a92b5dac2e4d7335ff",
+      "name": "Smiling face with heart-eyes",
+      "description": "Unicode: 1f60d;\nFolderId: 0015000",
+      "remote": true
+    },
+    "1:225": {
+      "key": "bab917e09f6e7f2612e212437bd879186531c4b9",
+      "name": ".Base / Smiley Head",
+      "description": "",
+      "remote": true
+    },
+    "1:236": {
+      "key": "cb51524f4f4dbbc8e1598115de568388a2a12560",
+      "name": ".Base / Component / Smiley Eyes",
+      "description": "",
+      "remote": true
+    },
+    "1:470": {
+      "key": "75ac71a3145391c3cebf0dfe55ffe6b7fcede92c",
+      "name": ".Base / Smiley Mouth",
+      "description": "",
+      "remote": true
+    },
+    "101:566": {
+      "key": "7a437c518b9a2533c512c79e7afa9fd2e5e345ba",
+      "name": "Documentation",
+      "description": "",
+      "remote": true
+    }
+  }
+}

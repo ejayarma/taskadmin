@@ -1,0 +1,435 @@
+{
+  "file": {
+    "name": "Task management & to-do list app (Community)",
+    "url": "https://www.figma.com/design/ZEMAo3vlW0vBucEwbPiEkG/",
+    "lastModified": "2026-07-22T18:11:57Z"
+  },
+  "screens": [
+    {
+      "name": "presentation (splash)",
+      "id": "1:88",
+      "file": "screen-1-88.svg"
+    },
+    {
+      "name": "cover",
+      "id": "1:178",
+      "file": "screen-1-178.svg"
+    },
+    {
+      "name": "about us",
+      "id": "1:687",
+      "file": "screen-1-687.svg"
+    },
+    {
+      "name": "let's start (onboarding)",
+      "id": "101:100",
+      "file": "screen-101-100.svg"
+    },
+    {
+      "name": "home (main)",
+      "id": "101:125",
+      "file": "screen-101-125.svg"
+    },
+    {
+      "name": "today's tasks",
+      "id": "101:265",
+      "file": "screen-101-265.svg"
+    },
+    {
+      "name": "add project in task list",
+      "id": "101:358",
+      "file": "screen-101-358.svg"
+    }
+  ],
+  "designTokens": {
+    "colors": [
+      {
+        "hex": "#ffffff",
+        "count": 93,
+        "samples": [
+          "home",
+          "Your today’s task almost done!",
+          "85%"
+        ]
+      },
+      {
+        "hex": "#5f33e1",
+        "count": 65,
+        "samples": [
+          "Rectangle 1036",
+          "View Task",
+          "Ellipse 28"
+        ]
+      },
+      {
+        "hex": "#24252c",
+        "count": 47,
+        "samples": [
+          "Hello!",
+          "Livia Vaccaro",
+          "Vector"
+        ]
+      },
+      {
+        "hex": "#6e6a7c",
+        "count": 16,
+        "samples": [
+          "Office Project",
+          "Personal Project",
+          "23 Tasks"
+        ]
+      },
+      {
+        "hex": "#f478b8",
+        "count": 11,
+        "samples": [
+          "Vector",
+          "Vector",
+          "Ellipse 21"
+        ]
+      },
+      {
+        "hex": "#ab94ff",
+        "count": 8,
+        "samples": [
+          "10:00 AM",
+          "12:00 PM",
+          "07:00 PM"
+        ]
+      },
+      {
+        "hex": "#eee9ff",
+        "count": 6,
+        "samples": [
+          "Rectangle 1037",
+          "Ellipse 17",
+          "Ellipse 18"
+        ]
+      },
+      {
+        "hex": "#ffe4f2",
+        "count": 6,
+        "samples": [
+          "Rectangle 1047",
+          "Ellipse 20",
+          "Rectangle 1053"
+        ]
+      },
+      {
+        "hex": "#130f26",
+        "count": 6,
+        "samples": [
+          "Path",
+          "Path"
+        ]
+      },
+      {
+        "hex": "#ff9142",
+        "count": 5,
+        "samples": [
+          "Ellipse 25",
+          "Vector",
+          "Vector"
+        ]
+      },
+      {
+        "hex": "#ede8ff",
+        "count": 5,
+        "samples": [
+          "Rectangle 1059",
+          "Rectangle 1060",
+          "Rectangle 1061"
+        ]
+      },
+      {
+        "hex": "#0087ff",
+        "count": 3,
+        "samples": [
+          "Rectangle 1040"
+        ]
+      },
+      {
+        "hex": "#ede4ff",
+        "count": 3,
+        "samples": [
+          "Ellipse 22",
+          "Rectangle 1048"
+        ]
+      },
+      {
+        "hex": "#ffe6d4",
+        "count": 3,
+        "samples": [
+          "Ellipse 24",
+          "Rectangle 1050"
+        ]
+      },
+      {
+        "hex": "#9260f4",
+        "count": 3,
+        "samples": [
+          "Ellipse 23",
+          "Vector"
+        ]
+      },
+      {
+        "hex": "#ffd12e",
+        "count": 3,
+        "samples": [
+          "Ellipse 27",
+          "Vector",
+          "Vector"
+        ]
+      },
+      {
+        "hex": "#d9d9d9",
+        "count": 2,
+        "samples": [
+          "Ellipse 15"
+        ]
+      },
+      {
+        "hex": "#ffe9e1",
+        "count": 2,
+        "samples": [
+          "Rectangle 1041"
+        ]
+      },
+      {
+        "hex": "#000000",
+        "count": 2,
+        "samples": [
+          "Grocery shopping app design",
+          "Uber Eats redesign challange"
+        ]
+      },
+      {
+        "hex": "#ff7d53",
+        "count": 2,
+        "samples": [
+          "Rectangle 1043"
+        ]
+      },
+      {
+        "hex": "#fff6d4",
+        "count": 2,
+        "samples": [
+          "Ellipse 26",
+          "Rectangle 1052"
+        ]
+      },
+      {
+        "hex": "#e3f2ff",
+        "count": 2,
+        "samples": [
+          "Rectangle 1068",
+          "Rectangle 1070"
+        ]
+      },
+      {
+        "hex": "#e7f3ff",
+        "count": 1,
+        "samples": [
+          "Rectangle 1038"
+        ]
+      },
+      {
+        "hex": "#8764ff",
+        "count": 1,
+        "samples": [
+          "Ellipse 16"
+        ]
+      },
+      {
+        "hex": "#047c78",
+        "count": 1,
+        "samples": [
+          "Grocery shop"
+        ]
+      },
+      {
+        "hex": "#eaed2a",
+        "count": 1,
+        "samples": [
+          "Ellipse 5"
+        ]
+      },
+      {
+        "hex": "#ffd7e4",
+        "count": 1,
+        "samples": [
+          "Ellipse 9"
+        ]
+      },
+      {
+        "hex": "#92deff",
+        "count": 1,
+        "samples": [
+          "Ellipse 7"
+        ]
+      },
+      {
+        "hex": "#be9fff",
+        "count": 1,
+        "samples": [
+          "Ellipse 8"
+        ]
+      },
+      {
+        "hex": "#7ffcaa",
+        "count": 1,
+        "samples": [
+          "Ellipse 6"
+        ]
+      },
+      {
+        "hex": "#a4e7f9",
+        "count": 1,
+        "samples": [
+          "Ellipse 10"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "fontFamily": "Lexend Deca",
+        "fontWeight": 400,
+        "fontSize": 11,
+        "lineHeight": 13.75,
+        "letterSpacing": 0,
+        "count": 32,
+        "samples": [
+          "6",
+          "4",
+          "Office Project"
+        ]
+      },
+      {
+        "fontFamily": "Lexend Deca",
+        "fontWeight": 400,
+        "fontSize": 14,
+        "lineHeight": 17.5,
+        "letterSpacing": 0,
+        "count": 20,
+        "samples": [
+          "Hello!",
+          "Your today’s task almost done!",
+          "85%"
+        ]
+      },
+      {
+        "fontFamily": "Lexend Deca",
+        "fontWeight": 600,
+        "fontSize": 19,
+        "lineHeight": 23.75,
+        "letterSpacing": 0,
+        "count": 12,
+        "samples": [
+          "Livia Vaccaro",
+          "In Progress",
+          "Task Groups"
+        ]
+      },
+      {
+        "fontFamily": "Lexend Deca",
+        "fontWeight": 400,
+        "fontSize": 9,
+        "lineHeight": 11.25,
+        "letterSpacing": 0,
+        "count": 9,
+        "samples": [
+          "Done",
+          "In Progress",
+          "To-do"
+        ]
+      },
+      {
+        "fontFamily": "Lexend Deca",
+        "fontWeight": 600,
+        "fontSize": 14,
+        "lineHeight": 17.5,
+        "letterSpacing": 0,
+        "count": 3,
+        "samples": [
+          "View Task"
+        ]
+      },
+      {
+        "fontFamily": "Poppins",
+        "fontWeight": 600,
+        "fontSize": 14,
+        "lineHeight": 17,
+        "letterSpacing": 0,
+        "count": 1,
+        "samples": [
+          "Grocery shop"
+        ]
+      },
+      {
+        "fontFamily": "Lexend Deca",
+        "fontWeight": 600,
+        "fontSize": 24,
+        "lineHeight": 30,
+        "letterSpacing": 0,
+        "count": 1,
+        "samples": [
+          "Task Management & To-Do List"
+        ]
+      }
+    ],
+    "radii": [
+      {
+        "value": 15,
+        "count": 19
+      },
+      {
+        "value": 7,
+        "count": 11
+      },
+      {
+        "value": 9,
+        "count": 9
+      },
+      {
+        "value": 3,
+        "count": 4
+      },
+      {
+        "value": 19,
+        "count": 2
+      },
+      {
+        "value": 14,
+        "count": 2
+      },
+      {
+        "value": 24,
+        "count": 1
+      }
+    ],
+    "spacing": []
+  },
+  "colorStyles": {
+    "Color/Primary": "#5f33e1",
+    "Color/Black": "#24252c",
+    "Gray 1": "#333333",
+    "color/black": "#24252c",
+    "Color/Secondery": "#6e6a7c",
+    "color/grey": "#eff0f7",
+    "color/yellow": "#f6e31a",
+    "color/white": "#fafafa",
+    "System Bg Dark Base / Primary": "#000000",
+    "Label Light / Primary": "#000000",
+    "Color Light / Green": "#34c759",
+    "SystemGreen / Light": "#34c759",
+    "Grayscale/Label": "#6e7191",
+    "Grayscale/Off-Black": "#14142b",
+    "Grayscale/Input": "#eff0f6",
+    "Color/White": "#cccccc"
+  },
+  "fonts": [
+    "Lexend Deca",
+    "Poppins",
+    "Manrope"
+  ]
+}
