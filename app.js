@@ -15,7 +15,15 @@ function saveTasks(tasks) {
 function statusText(task) {
   if (task.completed) return 'Completed';
   if (task.dueDate && task.dueDate < todayStr()) return 'Overdue';
+  if (task.startDate && task.startDate > todayStr()) return 'To Do';
   return 'In Progress';
+}
+
+function statusBadgeClass(task) {
+  if (task.completed) return 'bg-success';
+  if (task.dueDate && task.dueDate < todayStr()) return 'bg-danger';
+  if (task.startDate && task.startDate > todayStr()) return 'bg-secondary';
+  return 'bg-primary';
 }
 
 function renderTasks() {
@@ -34,7 +42,7 @@ function renderTasks() {
       <span class="task-title flex-grow-1 ${task.completed ? 'text-decoration-line-through text-muted' : ''}">${task.title}</span>
       <span class="task-start-date text-muted me-2 small">${task.startDate || ''}</span>
       <span class="task-due-date text-muted me-2 small">${task.dueDate ? 'Due: ' + task.dueDate : ''}</span>
-      <span class="badge ${task.completed ? 'bg-success' : (task.dueDate && task.dueDate < todayStr() ? 'bg-danger' : 'bg-primary')} me-2">${statusText(task)}</span>
+      <span class="badge ${statusBadgeClass(task)} me-2">${statusText(task)}</span>
       <button class="btn btn-sm btn-outline-info me-1 view-btn" data-id="${task.id}" title="View task">
         <i class="bi bi-eye"></i>
       </button>

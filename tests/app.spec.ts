@@ -169,6 +169,17 @@ test('Overdue task shows Overdue badge', async ({ page }) => {
   await expect(page.locator('#taskList li .badge')).toHaveClass(/bg-danger/);
 });
 
+test('Future task shows To Do badge', async ({ page }) => {
+  const future = '2099-12-31';
+  await page.fill('#taskInput', 'Future task');
+  await page.fill('#taskStartDate', future);
+  await page.fill('#taskDueDate', future);
+  await page.click('#addBtn');
+
+  await expect(page.locator('#taskList li .badge')).toHaveText('To Do');
+  await expect(page.locator('#taskList li .badge')).toHaveClass(/bg-secondary/);
+});
+
 test('Complete a task', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
   await page.click('#addBtn');
