@@ -4,14 +4,7 @@
 
 A simple client-side task management application built with vanilla HTML, CSS, and JavaScript using Bootstrap 5 for UI components and styling. No backend required - tasks stored in localStorage.
 
-## 2. Files
-
-- `index.html` - Main HTML structure
-- `styles.css` - Custom styling
-- `app.js` - Application logic
-- Bootstrap 5 CDN - UI framework
-
-## 3. HTML Structure
+## 2. HTML Structure
 
 ```
 - Page title: "Task Manager - John Ayarma"

@@ -107,8 +107,8 @@ test('Delete a task with confirmation', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
   await page.click('#addBtn');
 
-  page.once('dialog', dialog => dialog.accept());
   await page.click('.delete-btn');
+  await page.click('#confirmDeleteBtn');
 
   await expect(page.locator('#taskList li')).toHaveCount(0);
 });
@@ -117,8 +117,8 @@ test('Cancel deletion when dialog is dismissed', async ({ page }) => {
   await page.fill('#taskInput', 'Buy groceries');
   await page.click('#addBtn');
 
-  page.once('dialog', dialog => dialog.dismiss());
   await page.click('.delete-btn');
+  await page.keyboard.press('Escape');
 
   await expect(page.locator('#taskList li')).toHaveCount(1);
 });

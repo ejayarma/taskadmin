@@ -24,3 +24,11 @@ Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf
 - **E2E Framework**: Playwright
 - **Run tests**: `npx playwright test`
 - **Test dir**: `./tests`
+
+
+# Files
+
+- `index.html` - Main HTML structure
+- `styles.css` - Custom styling
+- `app.js` - Application logic
+- Bootstrap 5 CDN - UI framework

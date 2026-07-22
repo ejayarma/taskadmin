@@ -1,6 +1,8 @@
 const STORAGE_KEY = 'tasks';
 let editModal = null;
+let deleteModal = null;
 let currentEditId = null;
+let pendingDeleteId = null;
 
 function getTasks() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -48,10 +50,22 @@ function addTask(title, startDate) {
 }
 
 function deleteTask(id) {
-  if (!confirm('Are you sure you want to delete this task?')) return;
-  const tasks = getTasks().filter(t => t.id !== id);
+  pendingDeleteId = id;
+  const tasks = getTasks();
+  const task = tasks.find(t => t.id === id);
+  const title = task ? task.title : '';
+  document.getElementById('deleteTaskTitle').textContent =
+    title.length > 50 ? title.slice(0, 50) + '...' : title;
+  deleteModal.show();
+}
+
+function confirmDelete() {
+  if (pendingDeleteId === null) return;
+  const tasks = getTasks().filter(t => t.id !== pendingDeleteId);
   saveTasks(tasks);
   renderTasks();
+  pendingDeleteId = null;
+  deleteModal.hide();
 }
 
 function toggleCompleted(id) {
@@ -104,7 +118,14 @@ function showEditModal(id) {
 
 document.addEventListener('DOMContentLoaded', () => {
   editModal = new bootstrap.Modal(document.getElementById('editModal'));
+  deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
   viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
+
+  document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+
+  document.getElementById('deleteModal').addEventListener('hidden.bs.modal', () => {
+    pendingDeleteId = null;
+  });
 
   document.getElementById('addBtn').addEventListener('click', () => {
     const input = document.getElementById('taskInput');

@@ -41,6 +41,20 @@ Given the user has a task "Buy groceries"
 When the user marks "Buy groceries" as completed
 Then the task "Buy groceries" should be struck through and greyed out
 
+Scenario: Delete a task with confirmation
+Given the user has a task "Buy groceries"
+When the user clicks delete on task "Buy groceries"
+Then a confirmation dialog should be shown
+When the user confirms the deletion
+Then the task "Buy groceries" should not appear in the task list
+
+Scenario: Cancel deletion of a task
+Given the user has a task "Buy groceries"
+When the user clicks delete on task "Buy groceries"
+Then a confirmation dialog should be shown
+When the user cancels the deletion
+Then the task "Buy groceries" should still appear in the task list
+
 Scenario: Task action buttons display icons
 Given the user has a task "Buy groceries"
 Then the task "Buy groceries" should display an edit icon button
