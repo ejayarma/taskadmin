@@ -13,10 +13,9 @@ Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf
 
 # Web Server
 
-- **Server**: darkhttpd v1.17
+- **Server**: Express (serves static files + API)
 - **Port**: 8080
-- **Document Root**: `/home/task admin`
-- **Start**: `sh /home/taskadmin/serve.sh`
+- **Start**: `npm start`
 - **URL**: `http://localhost:8080`
 
 # Testing
@@ -32,6 +31,27 @@ Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf
 - `styles.css` - Custom styling
 - `app.js` - Application logic
 - Bootstrap Icons CDN - icon library (no Bootstrap CSS/JS)
+
+# PostgreSQL Database
+
+- **Host**: `my-postgres-1`
+- **Port**: `5432`
+- **User**: `postgres`
+- **Password**: `root`
+- **Database**: `postgres`
+- **Connect**: `PGPASSWORD=root psql -h my-postgres-1 -U postgres`
+- **Table**: `tasks` (id, title, description, start_date, due_date, completed, category, created_at)
+
+# API Server
+
+- **Port**: 8080
+- **Start**: `npm start`
+- **Endpoints**:
+  - `GET /api/tasks` - List all tasks
+  - `GET /api/tasks/:id` - Get task by ID
+  - `POST /api/tasks` - Create task
+  - `PUT /api/tasks/:id` - Update task
+  - `DELETE /api/tasks/:id` - Delete task
 
 # Figma API
 

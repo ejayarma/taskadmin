@@ -4,7 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "playwright test"
+    "start": "node server.js",
+    "migrate": "node migrate.js",
+    "test": "playwright test",
+    "test:api": "node server.js & sleep 2 && node tests/api-test.js; kill %1 2>/dev/null"
   },
   "repository": {
     "type": "git",
@@ -20,5 +23,9 @@
   "homepage": "https://github.com/ejayarma/taskadmin#readme",
   "devDependencies": {
     "@playwright/test": "^1.61.1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
   }
 }

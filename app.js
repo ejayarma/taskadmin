@@ -1,31 +1,42 @@
-const STORAGE_KEY = 'tasks';
+const API = '/api/tasks';
 let currentEditId = null;
 let pendingDeleteId = null;
 let draggedItem = null;
+let tasksCache = [];
 
-function getTasks() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-}
-
-function saveTasks(tasks) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+async function api(method, path, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(path, opts);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
 }
 
 function todayStr() {
   return new Date().toISOString().split('T')[0];
 }
 
+function toDateStr(val) {
+  if (!val) return '';
+  return val.split('T')[0];
+}
+
 function statusText(task) {
+  const due = toDateStr(task.due_date);
+  const start = toDateStr(task.start_date);
   if (task.completed) return 'Completed';
-  if (task.dueDate && task.dueDate < todayStr()) return 'Overdue';
-  if (task.startDate && task.startDate > todayStr()) return 'To Do';
+  if (due && due < todayStr()) return 'Overdue';
+  if (start && start > todayStr()) return 'To Do';
   return 'In Progress';
 }
 
 function statusBadgeClass(task) {
+  const due = toDateStr(task.due_date);
+  const start = toDateStr(task.start_date);
   if (task.completed) return 'completed';
-  if (task.dueDate && task.dueDate < todayStr()) return 'overdue';
-  if (task.startDate && task.startDate > todayStr()) return 'todo';
+  if (due && due < todayStr()) return 'overdue';
+  if (start && start > todayStr()) return 'todo';
   return 'in-progress';
 }
 
@@ -53,18 +64,16 @@ function formatDate(dateStr) {
 }
 
 function updateProgress() {
-  const tasks = getTasks();
-  const total = tasks.length;
-  const done = tasks.filter(t => t.completed).length;
+  const total = tasksCache.length;
+  const done = tasksCache.filter(t => t.completed).length;
   const pct = total ? Math.round((done / total) * 100) : 0;
   document.getElementById('progressPercent').textContent = pct + '%';
   document.getElementById('progressFill').style.width = pct + '%';
 }
 
 function updateCategories() {
-  const tasks = getTasks();
-  const office = tasks.filter(t => (t.category || 'general') === 'office').length;
-  const personal = tasks.filter(t => (t.category || 'general') === 'personal').length;
+  const office = tasksCache.filter(t => (t.category || 'general') === 'office').length;
+  const personal = tasksCache.filter(t => (t.category || 'general') === 'personal').length;
   document.getElementById('officeCount').textContent = office + ' Tasks';
   document.getElementById('personalCount').textContent = personal + ' Tasks';
 }
@@ -76,19 +85,19 @@ function escapeHtml(str) {
 }
 
 function renderTasks() {
-  const tasks = getTasks();
   const list = document.getElementById('taskList');
   list.innerHTML = '';
+  document.getElementById('taskCount').textContent = tasksCache.length;
 
-  document.getElementById('taskCount').textContent = tasks.length;
-
-  tasks.forEach(task => {
+  tasksCache.forEach(task => {
     const li = document.createElement('li');
     li.draggable = true;
     li.dataset.id = task.id;
     li.className = 'task-card' + (task.completed ? ' completed' : '');
 
-    const time = formatDate(task.startDate) || formatDate(task.dueDate);
+    const start = toDateStr(task.start_date);
+    const due = toDateStr(task.due_date);
+    const time = formatDate(start) || formatDate(due);
 
     const descHtml = task.description
       ? `<div class="task-desc">${escapeHtml(task.description)}</div>`
@@ -101,7 +110,7 @@ function renderTasks() {
         <div class="task-title${task.completed ? ' completed' : ''}">${escapeHtml(task.title)}</div>
         ${descHtml}
       </div>
-      <div class="task-time">${time || task.dueDate || ''}</div>
+      <div class="task-time">${time || due || ''}</div>
       <span class="task-badge ${statusBadgeClass(task)}">${statusText(task)}</span>
       <div class="task-actions">
         <button class="task-action-btn view-btn" data-id="${task.id}" title="View">
@@ -133,94 +142,85 @@ function closeModal(id) {
   if (el) el.classList.remove('open');
 }
 
-function addTask(title, description, startDate, dueDate) {
+async function loadTasks() {
+  tasksCache = await api('GET', API);
+  renderTasks();
+}
+
+async function addTask(title, description, startDate, dueDate) {
   if (!title.trim()) return false;
   const err = validateDates(startDate, dueDate);
   if (err) { showError(err); return false; }
   clearError();
-  const tasks = getTasks();
-  tasks.push({
-    id: Date.now(),
+  await api('POST', API, {
     title: title.trim(),
     description: description.trim(),
-    startDate: startDate || todayStr(),
-    dueDate: dueDate || '',
-    completed: false,
-    category: 'general'
+    start_date: startDate || todayStr(),
+    due_date: dueDate || todayStr(),
+    category: 'general',
   });
-  saveTasks(tasks);
-  renderTasks();
+  await loadTasks();
   return true;
 }
 
 function deleteTask(id) {
   pendingDeleteId = id;
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === id);
+  const task = tasksCache.find(t => t.id === id);
   const title = task ? task.title : '';
   document.getElementById('deleteTaskTitle').textContent =
     title.length > 50 ? title.slice(0, 50) + '...' : title;
   openModal('deleteModal');
 }
 
-function confirmDelete() {
+async function confirmDelete() {
   if (pendingDeleteId === null) return;
-  const tasks = getTasks().filter(t => t.id !== pendingDeleteId);
-  saveTasks(tasks);
-  renderTasks();
+  await api('DELETE', `${API}/${pendingDeleteId}`);
   pendingDeleteId = null;
   closeModal('deleteModal');
+  await loadTasks();
 }
 
-function toggleCompleted(id) {
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === id);
+async function toggleCompleted(id) {
+  const task = tasksCache.find(t => t.id === id);
   if (task) {
-    task.completed = !task.completed;
-    saveTasks(tasks);
-    renderTasks();
+    await api('PATCH', `${API}/${id}`, { completed: !task.completed });
+    await loadTasks();
   }
 }
 
-function editTask(id, newTitle, description, startDate, dueDate) {
+async function editTask(id, newTitle, description, startDate, dueDate) {
   const err = validateDates(startDate, dueDate);
   if (err) { showError(err); return false; }
   clearError();
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === id);
-  if (task) {
-    task.title = newTitle;
-    task.description = description.trim();
-    task.startDate = startDate;
-    task.dueDate = dueDate;
-    saveTasks(tasks);
-    renderTasks();
-  }
+  await api('PUT', `${API}/${id}`, {
+    title: newTitle,
+    description: description.trim(),
+    start_date: startDate,
+    due_date: dueDate,
+  });
+  await loadTasks();
   return true;
 }
 
 function showViewModal(id) {
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === id);
+  const task = tasksCache.find(t => t.id === id);
   if (!task) return;
   document.getElementById('viewTaskTitle').textContent = task.title;
   document.getElementById('viewTaskDescription').textContent = task.description || 'Not set';
-  document.getElementById('viewTaskStartDate').textContent = task.startDate || 'Not set';
-  document.getElementById('viewTaskDueDate').textContent = task.dueDate || 'Not set';
+  document.getElementById('viewTaskStartDate').textContent = toDateStr(task.start_date) || 'Not set';
+  document.getElementById('viewTaskDueDate').textContent = toDateStr(task.due_date) || 'Not set';
   document.getElementById('viewTaskStatus').textContent = statusText(task);
   openModal('viewModal');
 }
 
 function showEditModal(id) {
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === id);
+  const task = tasksCache.find(t => t.id === id);
   if (!task) return;
-
   currentEditId = id;
   document.getElementById('editTaskTitle').value = task.title;
   document.getElementById('editTaskDescription').value = task.description || '';
-  document.getElementById('editTaskStartDate').value = task.startDate || todayStr();
-  document.getElementById('editTaskDueDate').value = task.dueDate || '';
+  document.getElementById('editTaskStartDate').value = toDateStr(task.start_date) || todayStr();
+  document.getElementById('editTaskDueDate').value = toDateStr(task.due_date) || '';
   openModal('editModal');
 }
 
@@ -283,20 +283,7 @@ function initDragDrop() {
 
   document.getElementById('taskList').addEventListener('drop', (e) => {
     e.preventDefault();
-    if (draggedItem) {
-      const fromId = Number(draggedItem.dataset.id);
-      const items = [...document.querySelectorAll('#taskList li')];
-      const toIndex = items.indexOf(draggedItem);
-
-      const tasks = getTasks();
-      const movedTask = tasks.find(t => t.id === fromId);
-      if (movedTask) {
-        const newTasks = tasks.filter(t => t.id !== fromId);
-        newTasks.splice(toIndex, 0, movedTask);
-        saveTasks(newTasks);
-        renderTasks();
-      }
-    }
+    draggedItem = null;
   });
 }
 
@@ -308,12 +295,14 @@ function initEventListeners() {
     const desc = document.getElementById('taskDescription');
     const dateInput = document.getElementById('taskStartDate');
     const dueDateInput = document.getElementById('taskDueDate');
-    if (addTask(input.value, desc.value, dateInput.value, dueDateInput.value)) {
-      input.value = '';
-      desc.value = '';
-      dateInput.value = todayStr();
-      dueDateInput.value = todayStr();
-    }
+    addTask(input.value, desc.value, dateInput.value, dueDateInput.value).then(ok => {
+      if (ok) {
+        input.value = '';
+        desc.value = '';
+        dateInput.value = todayStr();
+        dueDateInput.value = todayStr();
+      }
+    });
   });
 
   document.getElementById('taskInput').addEventListener('keydown', (e) => {
@@ -322,12 +311,14 @@ function initEventListeners() {
       const desc = document.getElementById('taskDescription');
       const dateInput = document.getElementById('taskStartDate');
       const dueDateInput = document.getElementById('taskDueDate');
-      if (addTask(input.value, desc.value, dateInput.value, dueDateInput.value)) {
-        input.value = '';
-        desc.value = '';
-        dateInput.value = todayStr();
-        dueDateInput.value = todayStr();
-      }
+      addTask(input.value, desc.value, dateInput.value, dueDateInput.value).then(ok => {
+        if (ok) {
+          input.value = '';
+          desc.value = '';
+          dateInput.value = todayStr();
+          dueDateInput.value = todayStr();
+        }
+      });
     }
   });
 
@@ -353,15 +344,14 @@ function initEventListeners() {
     const descInput = document.getElementById('editTaskDescription');
     const dateInput = document.getElementById('editTaskStartDate');
     const dueDateInput = document.getElementById('editTaskDueDate');
-    if (editTask(currentEditId, titleInput.value, descInput.value, dateInput.value, dueDateInput.value)) {
-      closeModal('editModal');
-    }
+    editTask(currentEditId, titleInput.value, descInput.value, dateInput.value, dueDateInput.value).then(ok => {
+      if (ok) closeModal('editModal');
+    });
   });
 
   document.getElementById('viewProgressBtn').addEventListener('click', () => {
-    const tasks = getTasks();
-    if (tasks.length > 0) {
-      showViewModal(tasks[0].id);
+    if (tasksCache.length > 0) {
+      showViewModal(tasksCache[0].id);
     }
   });
 }
@@ -374,5 +364,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initBottomNav();
   initDragDrop();
   initEventListeners();
-  renderTasks();
+  loadTasks();
 });
